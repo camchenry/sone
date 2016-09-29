@@ -64,3 +64,9 @@ sone.fadeIn(sound, 5)
 sone.fadeInOut(sound, 5)
 ```
 
+# Building documentation
+To build the HTML documentation, run:
+```bash
+cd docs
+lua rtfm.lua ../sone.lua > index.html
+```
