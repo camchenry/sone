@@ -281,7 +281,7 @@ local function biquadFilter(sound, parameters)
     local sr = sound:getSampleRate()
     -- Center frequency
     assert(parameters.frequency, "Frequency must be specified for filter")
-    local freq = clamp(0, parameters.frequency, 40000)
+    local freq = clamp(0, parameters.frequency, sr / 2)
     -- Resonance / quality factor
     local Q = clamp(parameters.Q or 1, 0, 100)
     -- EQ filter gain
