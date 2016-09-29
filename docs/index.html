@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Sone API Reference</title><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/styles/default.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700">
+        <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet"> 
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body><div class="contents">
+            <h1>Sone API Reference</h1>
+            <nav><h3>Table of Contents</h3>
+                <ul><li>
+            <a href="#sone">sone</a>
+            <ul><li>
+            <a href="#amplify">amplify</a>
+            <ul></ul>
+        </li><li>
+            <a href="#fadeIn">fadeIn</a>
+            <ul></ul>
+        </li><li>
+            <a href="#fadeInOut">fadeInOut</a>
+            <ul></ul>
+        </li><li>
+            <a href="#fadeOut">fadeOut</a>
+            <ul></ul>
+        </li><li>
+            <a href="#filter">filter</a>
+            <ul></ul>
+        </li><li>
+            <a href="#pan">pan</a>
+            <ul></ul>
+        </li><li>
+            <a href="#Using sone for sound processing">Using sone for sound processing</a>
+            <ul></ul>
+        </li><li>
+            <a href="#FadeType">FadeType</a>
+            <ul></ul>
+        </li><li>
+            <a href="#FilterParameters">FilterParameters</a>
+            <ul></ul>
+        </li><li>
+            <a href="#FilterType">FilterType</a>
+            <ul></ul>
+        </li><li>
+            <a href="#SoundData">SoundData</a>
+            <ul></ul>
+        </li></ul>
+        </li></ul>
+            </nav>
+        </div><section><article><h2 class='Modules'><strong  id="sone">sone</strong> </h2><div><p></p><section>
+            <h4>Functions</h4><article><h4 class='Functions'><strong  id="amplify">amplify</strong> (sound, gain)</h4><div><p>Amplifies a sound by some amount. Clipping will occur if the gain amount is too high.
+
+**Example**
+```lua
+-- Amplify sound by 6dB.
+sone.amplify(sound, 6)
+
+-- Deamplify sound by -2.5dB.
+sone.amplify(sound, -2.5)
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> gain</strong></h5><div><p>Amplification amount in decibels.</p></div>
+        </article></div>
+        </article></section><article><h4 class='Functions'><strong  id="fadeIn">fadeIn</strong> (sound, seconds, fadeType)</h4><div><p>Fades in a sound to full volume over a number of seconds.
+
+**Example**
+```lua
+-- Fade in sound linearly over 3 seconds.
+sone.fadeIn(sound, 3)
+
+-- Fade in sound exponentially over 10 seconds.
+sone.fadeIn(sound, 10, "inOutExpo")
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
+        </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
+        </article></div>
+        </article><article><h4 class='Functions'><strong  id="fadeInOut">fadeInOut</strong> (sound, seconds, fadeType)</h4><div><p>Fades a sound at the beginning and at the end. The first N seconds will be faded in, and the last N seconds will be faded out.
+
+**Example**
+```lua
+-- Fade the first 5 seconds and last 5 seconds of a sound.
+sone.fadeInOut(sound, 5)
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
+        </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
+        </article></div>
+        </article><article><h4 class='Functions'><strong  id="fadeOut">fadeOut</strong> (sound, seconds, fadeType)</h4><div><p>Fades out a sound to zero volume over a number of seconds.
+
+**Example**
+```lua
+-- Fade out sound linearly over 3 seconds.
+sone.fadeOut(sound, 3)
+
+-- Fade out sound exponentially over 10 seconds.
+sone.fadeOut(sound, 10, "inOutExpo")
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
+        </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
+        </article></div>
+        </article><article><h4 class='Functions'><strong  id="filter">filter</strong> (sound, parameters)</h4><div><p>Filters a sound with different filters and settings.
+
+**Example**
+```lua
+-- Filter out all sounds below 1000Hz.
+sone.filter(sound, {
+    type = "highpass",
+    frequency = 1000,
+})
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><a href="#FilterParameters">FilterParameters</a></span><strong> parameters</strong></h5><div><p></p></div>
+        </article></div>
+        </article><article><h4 class='Functions'><strong  id="pan">pan</strong> (sound, pan)</h4><div><p>Pans a sound to either the left or right channel. Only works for stereo sounds.
+
+**Example**
+```lua
+-- Play sound 85% in the right channel, 15% in the left channel.
+sone.pan(sound, 0.85)
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> pan</strong></h5><div><p>How to pan the input (range: -1.0 to 1.0), where -1.0 is far left, 1.0 is far right, and 0.0 is dead center.</p></div>
+        </article></div>
+        </article><section>
+            <h3>Contexts</h3><article><h3 class='Contexts'><strong  id="Using sone for sound processing">Using sone for sound processing</strong> </h3><div><p>Examples of using sone to process a sound.
+```lua
+sone = require 'sone'
+sound = love.sound.newSoundData(...)
+
+-- NOTE: All sone functions will alter the sound data directly.
+
+-- Filter out all sounds above 150Hz.
+sone.filter(sound, {
+    type = "lowpass",
+    frequency = 150,
+})
+
+-- Boost sound at 1000Hz
+sone.filter(sound, {
+    type = "peakeq",
+    frequency = 1000,
+    gain = 9,
+})
+
+-- Boost everything below 150Hz by 6dB
+sone.filter(sound, {
+    type = "lowshelf",
+    frequency = 150,
+    gain = 6,
+})
+
+-- Amplify sound by 3dB
+sone.amplify(sound, 3)
+
+-- Pan sound to the left ear
+sone.pan(sound, -1)
+
+-- Fade in sound over 5 seconds
+sone.fadeIn(sound, 5)
+
+-- Fade in sound over 5 seconds, and also fade out the last 5 seconds
+sone.fadeInOut(sound, 5)
+
+-- Play the sound data
+love.audio.newSource(sound):play()
+```</p></div>
+        </article></section><section>
+            <h3>Types</h3><article><h3 class='Types'><strong  id="FadeType">FadeType</strong> </h3><div><p></p><section>
+            <h4>Fields</h4><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inCirc</strong></h4><div><p></p></div>
+        </article></section><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inCubic</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inExpo</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutCirc</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutCubic</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutExpo</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutQuad</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutQuart</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutQuint</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inOutSine</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inQuad</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inQuart</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inQuint</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> inSine</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> linear</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outCirc</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outCubic</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outExpo</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInCirc</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInCubic</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInExpo</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInQuad</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInQuart</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInQuint</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outInSine</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outQuad</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outQuart</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outQuint</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> outSine</strong></h4><div><p></p></div>
+        </article></div>
+        </article></section><article><h3 class='Types'><strong  id="FilterParameters">FilterParameters</strong> </h3><div><p>A table of the possible parameters for the filter function.</p><section>
+            <h4>Fields</h4><article><h4 class='Fields'><span class="type"><span class="primitive">number</span></span><strong> Q</strong></h4><div><p>The quality factor to use.
+Ranges from 0 to 100. Default: 1.</p></div>
+        </article></section><article><h4 class='Fields'><span class="type"><span class="primitive">number</span></span><strong> frequency</strong></h4><div><p>**REQUIRED** The center/target frequency (in Hz).</p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">number</span></span><strong> gain</strong></h4><div><p>The gain (in dB) to use for EQ filters.
+Ranges from -60dB to 60dB. Default: 0dB.</p></div>
+        </article><article><h4 class='Fields'><span class="type"><a href="#FilterType">FilterType</a></span><strong> type</strong></h4><div><p>**REQUIRED** The type of filter to use.</p></div>
+        </article></div>
+        </article><article><h3 class='Types'><strong  id="FilterType">FilterType</strong> </h3><div><p>Filters that are able to be used with the filter function. (`sone.filter`)</p><section>
+            <h4>Fields</h4><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> allpass</strong></h4><div><p></p></div>
+        </article></section><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> bandpass</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> highpass</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> highshelf</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> lowpass</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> lowshelf</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> notch</strong></h4><div><p></p></div>
+        </article><article><h4 class='Fields'><span class="type"><span class="primitive">string</span></span><strong> peakeq</strong></h4><div><p></p></div>
+        </article></div>
+        </article><article><h3 class='Types'><strong  id="SoundData">SoundData</strong> </h3><div><p>A SoundData object from LOVE. 
+https://www.love2d.org/wiki/SoundData</p></div>
+        </article></div>
+        </article></section><footer>
+            <small>
+            Documentation generated by <a href="https://github.com/airstruck/rtfm">RTFM</a>.
+            <span>Thu Sep 29 00:50:43 2016</span>
+            </small>
+        </footer>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/highlight.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.7.0/languages/lua.min.js"></script>
+        <script>
+            var md = markdownit({
+                html: true,
+                linkify: true,
+                highlight: function(str, lang) {
+                    if (lang && hljs.getLanguage(lang))
+                        try {
+                            return hljs.highlight(lang, str).value;
+                        } catch (_) {}
+                    return ''
+                }
+            });
+            var code_inline = md.renderer.rules.code_inline
+            md.renderer.rules.code_inline = function(a, b, c, d, e) {
+                var o = code_inline.call(md.renderer.rules, a, b, c, d, e)
+                if (document.getElementById(a[b].content))
+                    return '<a href="#' + a[b].content + '">' + o + '</a>'
+                return o
+            };
+            [].slice.apply(document.getElementsByTagName('p')).forEach(
+                function(e) {
+                    e.outerHTML = md.render(e.textContent)
+                })
+        </script>
+</body>
+</html>
+
