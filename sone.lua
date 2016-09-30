@@ -371,7 +371,28 @@ local function biquadFilter(sound, parameters)
     end
 
     local sampleCount = sound:getSampleCount() * sound:getChannels() - 1
-    for i=1, sampleCount do
+    local startSample = 0
+    local finishSample = sampleCount
+
+    if parameters.start then
+        startSample = parameters.start * sound:getSampleRate() * sound:getChannels()
+    elseif parameters.startSample then
+        startSample = parameters.startSample
+    end
+
+    if parameters.finish then
+        -- subtract one because sound indexes are zero-based
+        finishSample = parameters.finish * sound:getSampleRate() * sound:getChannels() - 1
+    elseif parameters.finishSample then
+        finishSample = parameters.finishSample
+    end
+
+    startSample = math.floor(startSample)
+    finishSample = math.floor(finishSample)
+    assert(startSample >= 0, "Start time cannot be less than zero")
+    assert(finishSample <= sampleCount, "Finish time cannot be longer than the sound")
+
+    for i=startSample, finishSample do
         sound:setSample(i, clamp(process(sound:getSample(i)), -1, 1))
     end
 
@@ -629,18 +650,31 @@ end
 --- @field string outCirc
 --- @field string inOutCirc
 --- @field string outInCirc
---- @end type
 
 --- @type FilterParameters
 --- A table of the possible parameters for the filter function.
 --- @field FilterType type **REQUIRED** The type of filter to use.
+
 --- @field number frequency **REQUIRED** The center/target frequency (in Hz).
--- Ranges from 0Hz to 40,000Hz.
---- @field number Q The quality factor to use.
+--- Ranges from 0Hz to (Sampling rate) / 2 Hz.
+
+--- @field number Q (optional) The quality factor to use.
 --- Ranges from 0 to 100. Default: 1.
---- @field number gain The gain (in dB) to use for EQ filters.
+
+--- @field number gain (optional) The gain (in dB) to use for EQ filters.
 --- Ranges from -60dB to 60dB. Default: 0dB.
---- @end type
+
+--- @field number start (optional) The time (in seconds) for the start of the filtered section.
+--- Default: 0 seconds.
+
+--- @field number finish (optional) The time (in seconds) for the finish of the filtered section.
+--- Default: the duration of the sound.
+
+--- @field number startSample (optional) The start (in samples) of the filtered section.
+--- Default: 0.
+
+--- @field number finishSample (optional) The finish (in samples) of the filtered section.
+--- Default: the number of samples in the sound.
 
 --- @type SoundData
 --- A SoundData object from LOVE. 
