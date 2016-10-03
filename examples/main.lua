@@ -16,84 +16,72 @@ function love.load(arg)
             currentSound:stop()
             currentSound = nil 
         end
+
+
         sounds = {
             original = love.sound.newSoundData(samples[currentSample]),
-            lowpass = love.sound.newSoundData(samples[currentSample]),
-            highpass = love.sound.newSoundData(samples[currentSample]),
-            bandpass = love.sound.newSoundData(samples[currentSample]),
-            notch = love.sound.newSoundData(samples[currentSample]),
-            allpass = love.sound.newSoundData(samples[currentSample]),
-            peakeq = love.sound.newSoundData(samples[currentSample]),
-            lowshelf = love.sound.newSoundData(samples[currentSample]),
-            highshelf = love.sound.newSoundData(samples[currentSample]),
-            leftpan = love.sound.newSoundData(samples[currentSample]),
-            rightpan = love.sound.newSoundData(samples[currentSample]),
-            fadein = love.sound.newSoundData(samples[currentSample]),
-            fadeout = love.sound.newSoundData(samples[currentSample]),
-            fadeinout = love.sound.newSoundData(samples[currentSample]),
-            amplified = love.sound.newSoundData(samples[currentSample]),
         }
 
-        sone.filter(sounds.lowpass, {
+        sounds.lowpass = sone.filter(sone.copy(sounds.original), {
             type = "lowpass",
             frequency = 150,
         })
 
-        sone.filter(sounds.highpass, {
+        sounds.highpass = sone.filter(sone.copy(sounds.original), {
             type = "highpass",
             frequency = 1000,
         })
 
-        sone.filter(sounds.bandpass, {
+        sounds.bandpass = sone.filter(sone.copy(sounds.original), {
             type = "bandpass",
             frequency = 1000,
             Q = 0.866,
             gain = -3,
         })
 
-        sone.filter(sounds.notch, {
+        sounds.notch = sone.filter(sone.copy(sounds.original), {
             type = "notch",
             frequency = 1000,
             Q = 0.8,
             gain = 6,
         })
 
-        sone.filter(sounds.allpass, {
+        sounds.allpass = sone.filter(sone.copy(sounds.original), {
             type = "allpass",
             frequency = 0,
         })
 
         -- Boost sound at 1000Hz
-        sone.filter(sounds.peakeq, {
+        sounds.peakeq = sone.filter(sone.copy(sounds.original), {
             type = "peakeq",
             frequency = 1000,
             gain = 9,
         })
 
         -- Boost everything below 150Hz by 6dB
-        sone.filter(sounds.lowshelf, {
+        sounds.lowshelf = sone.filter(sone.copy(sounds.original), {
             type = "lowshelf",
             frequency = 150,
             gain = 6,
         })
 
         -- Boost everything above 4kHz by 12dB
-        sone.filter(sounds.highshelf, {
+        sounds.highshelf = sone.filter(sone.copy(sounds.original), {
             type = "highshelf",
             frequency = 4000,
             gain = 12,
         })
 
         -- Amplify sound by 4.5dB
-        sone.amplify(sounds.amplified, 4.5)
+        sounds.amplified = sone.amplify(sone.copy(sounds.original), 4.5)
 
-        sone.pan(sounds.leftpan, -1)
-        sone.pan(sounds.rightpan, 1)
+        sounds.leftpan = sone.pan(sone.copy(sounds.original), -1)
+        sounds.rightpan = sone.pan(sone.copy(sounds.original), 1)
 
-        sone.fadeIn(sounds.fadein, 5)
-        sone.fadeOut(sounds.fadeout, 5)
+        sounds.fadein = sone.fadeIn(sone.copy(sounds.original), 5)
+        sounds.fadeout = sone.fadeOut(sone.copy(sounds.original), 5)
 
-        sone.fadeInOut(sounds.fadeinout, 5)
+        sounds.fadeinout = sone.fadeInOut(sone.copy(sounds.original), 5)
 
         soundList = {
             sounds.original,

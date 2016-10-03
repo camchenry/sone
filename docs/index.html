@@ -16,6 +16,9 @@
             <a href="#amplify">amplify</a>
             <ul></ul>
         </li><li>
+            <a href="#copy">copy</a>
+            <ul></ul>
+        </li><li>
             <a href="#fadeIn">fadeIn</a>
             <ul></ul>
         </li><li>
@@ -61,8 +64,21 @@ sone.amplify(sound, -2.5)
 ```</p><section>
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> gain</strong></h5><div><p>Amplification amount in decibels.</p></div>
-        </article></div>
-        </article></section><article><h4 class='Functions'><strong  id="fadeIn">fadeIn</strong> (sound, seconds, fadeType)</h4><div><p>Fades in a sound to full volume over a number of seconds.
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
+        </article></section><article><h4 class='Functions'><strong  id="copy">copy</strong> (sound, copyOverData)</h4><div><p>Makes a copy of a SoundData.
+
+**Example**
+```lua
+copy = sone.copy(sound)
+```</p><section>
+            <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p>The sound to copy.</p></div>
+        </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">boolean</span></span><strong> copyOverData</strong></h5><div><p>(optional) If false, only a new SoundData will be created with the same sample count, sample rate, bit depth, and channels. The actual signal data will not be copied.</p></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p>The copied sound.</p></div>
+        </article></section></div>
+        </article><article><h4 class='Functions'><strong  id="fadeIn">fadeIn</strong> (sound, seconds, fadeType)</h4><div><p>Fades in a sound to full volume over a number of seconds.
 
 **Example**
 ```lua
@@ -75,7 +91,9 @@ sone.fadeIn(sound, 10, "inOutExpo")
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
         </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
-        </article></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
         </article><article><h4 class='Functions'><strong  id="fadeInOut">fadeInOut</strong> (sound, seconds, fadeType)</h4><div><p>Fades a sound at the beginning and at the end. The first N seconds will be faded in, and the last N seconds will be faded out.
 
 **Example**
@@ -86,7 +104,9 @@ sone.fadeInOut(sound, 5)
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
         </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
-        </article></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
         </article><article><h4 class='Functions'><strong  id="fadeOut">fadeOut</strong> (sound, seconds, fadeType)</h4><div><p>Fades out a sound to zero volume over a number of seconds.
 
 **Example**
@@ -100,7 +120,9 @@ sone.fadeOut(sound, 10, "inOutExpo")
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> seconds</strong></h5><div><p>How long the fade will take.</p></div>
         </article><article><h5 class='Arguments'><span class="type"><a href="#FadeType">FadeType</a></span><strong> fadeType</strong></h5><div><p>(optional) Which fade curve to use. Default is linear.</p></div>
-        </article></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
         </article><article><h4 class='Functions'><strong  id="filter">filter</strong> (sound, parameters)</h4><div><p>Filters a sound with different filters and settings.
 
 **Example**
@@ -113,7 +135,9 @@ sone.filter(sound, {
 ```</p><section>
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><a href="#FilterParameters">FilterParameters</a></span><strong> parameters</strong></h5><div><p></p></div>
-        </article></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
         </article><article><h4 class='Functions'><strong  id="pan">pan</strong> (sound, pan)</h4><div><p>Pans a sound to either the left or right channel. Only works for stereo sounds.
 
 **Example**
@@ -123,7 +147,9 @@ sone.pan(sound, 0.85)
 ```</p><section>
             <h5>Arguments</h5><article><h5 class='Arguments'><span class="type"><a href="#SoundData">SoundData</a></span><strong> sound</strong></h5><div><p></p></div>
         </article></section><article><h5 class='Arguments'><span class="type"><span class="primitive">number</span></span><strong> pan</strong></h5><div><p>How to pan the input (range: -1.0 to 1.0), where -1.0 is far left, 1.0 is far right, and 0.0 is dead center.</p></div>
-        </article></div>
+        </article><section>
+            <h5>Returns</h5><article><h5 class='Returns'><span class="type"><a href="#SoundData">SoundData</a></span></h5><div><p></p></div>
+        </article></section></div>
         </article><section>
             <h3>Contexts</h3><article><h3 class='Contexts'><strong  id="Using sone for sound processing">Using sone for sound processing</strong> </h3><div><p>Examples of using sone to process a sound.
 ```lua
@@ -232,7 +258,7 @@ https://www.love2d.org/wiki/SoundData</p></div>
         </article></section><footer>
             <small>
             Documentation generated by <a href="https://github.com/airstruck/rtfm">RTFM</a>.
-            <span>Fri Sep 30 11:47:12 2016</span>
+            <span>Mon Oct  3 00:40:03 2016</span>
             </small>
         </footer>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.0.0/markdown-it.min.js"></script>

@@ -419,6 +419,7 @@ end
 --]=]
 --- @param SoundData sound
 --- @param FilterParameters parameters
+--- @return SoundData
 function sone.filter(sound, parameters)
     return biquadFilter(sound, parameters)
 end
@@ -438,6 +439,7 @@ end
 --]=]
 --- @param SoundData sound
 --- @param number gain Amplification amount in decibels.
+--- @return SoundData
 function sone.amplify(sound, gain)
     return sone.filter(sound, {
         type = "highshelf",
@@ -458,6 +460,7 @@ end
 --]=]
 --- @param SoundData sound
 --- @param number pan How to pan the input (range: -1.0 to 1.0), where -1.0 is far left, 1.0 is far right, and 0.0 is dead center.
+--- @return SoundData
 function sone.pan(sound, pan)
     assert(sound:getChannels() == 2, "Pan only works for stereo sounds.")
 
@@ -495,6 +498,7 @@ end
 --- @param SoundData sound
 --- @param number seconds How long the fade will take.
 --- @param FadeType fadeType (optional) Which fade curve to use. Default is linear.
+--- @return SoundData
 function sone.fadeIn(sound, seconds, fadeType)
     fadeType = fadeType or "linear"
     local ease = easing[fadeType]
@@ -530,6 +534,7 @@ end
 --- @param SoundData sound
 --- @param number seconds How long the fade will take.
 --- @param FadeType fadeType (optional) Which fade curve to use. Default is linear.
+--- @return SoundData
 function sone.fadeOut(sound, seconds, fadeType)
     fadeType = fadeType or "linear"
     local ease = easing[fadeType]
@@ -546,6 +551,8 @@ function sone.fadeOut(sound, seconds, fadeType)
         t = 1 - ease(i - start, 0, 1, finish - start)
         sound:setSample(i, t * sound:getSample(i))
     end
+
+    return sound
 end
 
 --- @function fadeInOut
@@ -561,9 +568,36 @@ end
 --- @param SoundData sound
 --- @param number seconds How long the fade will take.
 --- @param FadeType fadeType (optional) Which fade curve to use. Default is linear.
+--- @return SoundData
 function sone.fadeInOut(sound, seconds, fadeType)
     sone.fadeIn(sound, seconds, fadeType)
-    sone.fadeOut(sound, seconds, fadeType)
+    return sone.fadeOut(sound, seconds, fadeType)
+end
+
+--- @function copy
+--- Makes a copy of a SoundData.
+--[=[--
+
+**Example**
+```lua
+    copy = sone.copy(sound)
+```
+--]=]
+--- @param SoundData sound The sound to copy.
+--- @param boolean copyOverData (optional) If false, only a new SoundData will be created with the same sample count, sample rate, bit depth, and channels. The actual signal data will not be copied.
+--- @return SoundData The copied sound.
+function sone.copy(sound, copyOverData)
+    local copy = love.sound.newSoundData(sound:getSampleCount(), sound:getSampleRate(), sound:getBitDepth(), sound:getChannels())
+    copyOverData = copyOverData == nil and true or copyOverData
+   
+    if copyOverData then
+        local sampleCount = sound:getSampleCount() * sound:getChannels() - 1
+        for i=0, sampleCount do
+            copy:setSample(i, sound:getSample(i))
+        end
+    end
+
+    return copy
 end
 
 --- @env Using sone for sound processing
