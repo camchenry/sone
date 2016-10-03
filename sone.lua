@@ -279,6 +279,7 @@ end
 local function biquadFilter(sound, parameters)
     -- Sample rate
     local sr = sound:getSampleRate()
+    local ch = sound:getChannels()
     -- Center frequency
     assert(parameters.frequency, "Frequency must be specified for filter")
     local freq = clamp(0, parameters.frequency, sr / 2)
@@ -370,19 +371,19 @@ local function biquadFilter(sound, parameters)
         end
     end
 
-    local sampleCount = sound:getSampleCount() * sound:getChannels() - 1
+    local sampleCount = sound:getSampleCount() * ch - 1
     local startSample = 0
     local finishSample = sampleCount
 
     if parameters.start then
-        startSample = parameters.start * sound:getSampleRate() * sound:getChannels()
+        startSample = parameters.start * sr * ch
     elseif parameters.startSample then
         startSample = parameters.startSample
     end
 
     if parameters.finish then
         -- subtract one because sound indexes are zero-based
-        finishSample = parameters.finish * sound:getSampleRate() * sound:getChannels() - 1
+        finishSample = parameters.finish * sr * ch - 1
     elseif parameters.finishSample then
         finishSample = parameters.finishSample
     end
@@ -392,8 +393,12 @@ local function biquadFilter(sound, parameters)
     assert(startSample >= 0, "Start time cannot be less than zero")
     assert(finishSample <= sampleCount, "Finish time cannot be longer than the sound")
 
-    for i=startSample, finishSample do
-        sound:setSample(i, clamp(process(sound:getSample(i)), -1, 1))
+    for j = 1, ch do
+        x0, x1, x2 = 0, 0, 0
+        y0, y1, y2 = 0, 0, 0
+        for i=startSample + j - 1, finishSample, ch do
+            sound:setSample(i, clamp(process(sound:getSample(i)), -1, 1))
+        end
     end
 
     return sound
