@@ -287,6 +287,7 @@ local function biquadFilter(sound, parameters)
     local Q = clamp(parameters.Q or 1, 0, 100)
     -- EQ filter gain
     local gain = clamp(parameters.gain or 0, -60, 60)
+    local wet = clamp(parameters.wet or 1, 0, 1)
     local type = parameters.type
 
     local a0, a1, a2, b0, b1, b2
@@ -397,7 +398,10 @@ local function biquadFilter(sound, parameters)
         x0, x1, x2 = 0, 0, 0
         y0, y1, y2 = 0, 0, 0
         for i=startSample + j - 1, finishSample, ch do
-            sound:setSample(i, clamp(process(sound:getSample(i)), -1, 1))
+            local inputSample = sound:getSample(i)
+            local outputSample = process(sound:getSample(i))
+            outputSample = inputSample * (1 - wet) + (outputSample * wet)
+            sound:setSample(i, clamp(outputSample, -1, 1))
         end
     end
 
@@ -714,6 +718,9 @@ end
 
 --- @field number finishSample (optional) The finish (in samples) of the filtered section.
 --- Default: the number of samples in the sound.
+
+--- @field number wet (optional) The wetness of the filtered sound, or the percentage of the effect that will be applied.
+--- Default: 1 (100%). Ranges from 0 (0%) to 1 (100%).
 
 --- @type SoundData
 --- A SoundData object from LOVE. 
