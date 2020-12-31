@@ -1,7 +1,7 @@
 # sone
 Sone is a sound processing library for LÖVE.
 
-[Documentation](http://camchenry.com/sone)
+[Documentation](https://camchenry.github.io/sone)
 
 # When to use sone
 Sone was made for quickly iterating on a sound effect, then going back and preprocessing the sound later. Use sone if:
